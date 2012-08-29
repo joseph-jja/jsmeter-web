@@ -5,6 +5,7 @@
     <title>jsmeter - JavaScript code metrics</title>
     <style type="text/css">
     #code { 
+        margin: 5px; 
         width: 95%;
         height: 80%;
     }
@@ -16,6 +17,16 @@
     }
     .hidden { 
         display: none
+    }
+    table { 
+        margin: 5px; 
+    }
+    table, table th, table td { 
+        border: solid 1px black; 
+        padding: 2px;
+    }
+    tr.odd { 
+        background: #ffff09;
     }
     </style>
 </head>
@@ -54,16 +65,16 @@ function testFunction() {
     </form>
     </div>
         <div id="results" class="hidden">
-            <table border="0" id="resultTable">
+            <table id="resultTable">
 	            <thead>
 	                <tr>
 	                    <th>Line</th>
 	                    <th>Function</th>
 	                    <th>Statements</th>
-	                    <th>Lines</th>
-	                    <th>Comment Lines</th>
-	                    <th>Comment%</th>
 	                    <th>Branches</th>
+                        <th>Lines</th>
+	                    <th>Comment Lines</th>
+	                    <th>Comment Percent</th>
 	                    <th>Depth</th>
 	                    <th>Cyclomatic Complexity</th>
 	                    <th>Halstead Volume</th>
@@ -83,10 +94,9 @@ function testFunction() {
     <td>{{lineStart}}</td>
     <td>{{functionName}}</td>
     <td>{{statements}}</td>
-    <td>{{b}}</td>
+    <td>{{branches}}</td>
     <td>{{lines}}</td>
     <td>{{comments}}</td>
-    <td>{{commentPercent}}</td>
     <td>{{commentPercent}}</td>
     <td>{{blockDepth}}</td>
     <td>{{complexity}}</td>
@@ -96,47 +106,8 @@ function testFunction() {
     <td>{{mi}}</td>
 </tr>
     </script>
-    <script type="text/javascript">
-    function edit() {
-        
-        $("#results").addClass("hidden");
-        
-        $("#inputCode").removeClass("hidden");
-        
-    }
-    function processResults(results) {
-        var table, rowTemplate, rlen, i, row;
-        
-        table = $("#resultTable tbody");
-        rowTemplate = Handlebars.compile($("#result-row-template").html());
-
-        $("#results").removeClass("hidden");
-        
-        $("#inputCode").addClass("hidden");
-        
-        rlen = results.length;
-        
-        for ( i =0; i < rlen; i+=1 ) {
-            if ( isNaN(results[i]) ) {
-                row = results[i];
-                row['rowClass'] = ( i % 2 === 0 ) ? "odd": "even";
-                table.append( rowTemplate( row ) );
-            } 
-        } 
-    }
-    function analyze() {
-        var data;
-        
-        data = $("#code").html();
-        
-        $.post("/node/jsmeter?mode=JSON",
-              data.toString(),
-              processResults, 
-              "json"
-        );
-    }
-    $("#analyzeCode").bind("click", analyze);
-    $("#editCode").bind("click", edit);
+    <script type="text/javascript" src="lib/jsmeter-web.js">
+    
     </script>
 </body>
 </html>

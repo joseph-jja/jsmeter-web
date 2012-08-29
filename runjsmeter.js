@@ -47,7 +47,7 @@ function buildResponse(result) {
         response += '{ "functionName": "' + result[i].name.replace(/^\[\[[^\]]*\]\]\.?/, "Anonymous.").replace("[[code]].", "") + '",';
         response += '"lineStart":"' + result[i].lineStart + '",';
         response += '"statements":"' + result[i].s + '",';
-        response += '"b":"' + result[i].b + '",';
+        response += '"branches":"' + result[i].b + '",';
         response += '"lines":"' + result[i].lines + '",';
         response += '"comments":"' + result[i].comments + '",';
         response += '"commentPercent":"' + Math.round(result[i].comments / (result[i].lines) * 10000)/100 + '",';
@@ -69,7 +69,7 @@ function buildResponse(result) {
     return response;
 }
 
-app.post('/node/jsmeter', function(req, res){
+app.post('/jsmeter', function(req, res){
 
     var data, fs = require("fs"), 
         meter = require("jsmeter");
