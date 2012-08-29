@@ -44,7 +44,7 @@ function buildResponse(result) {
     
     for (var i = 0; i < len; i++) {
         name = result[i].name.replace(/^\[\[[^\]]*\]\]\.?/, "Anonymous");
-        response += '{ "functionName": "' + result[i].name.replace(/^\[\[[^\]]*\]\]\.?/, "Anonymous.").replace("[[code]].", "") + '",';
+        response += '{ "functionName": "' + name.replace("[[code]].", "") + '",';
         response += '"lineStart":"' + result[i].lineStart + '",';
         response += '"statements":"' + result[i].s + '",';
         response += '"branches":"' + result[i].b + '",';

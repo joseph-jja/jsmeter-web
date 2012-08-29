@@ -49,6 +49,12 @@
         margin: 0  auto;
         width: 95%;
     }
+    .exceeded {
+        color: red;
+        border: red 1px solid; 
+        background: #e8e8e8; 
+        font-weight: bold;
+    }
     </style>
 </head>
 <body>
@@ -122,11 +128,11 @@ function testFunction() {
     <td>{{comments}}</td>
     <td>{{commentPercent}}</td>
     <td>{{blockDepth}}</td>
-    <td>{{complexity}}</td>
+    <td class="{{complex}}">{{complexity}}</td>
     <td>{{halsteadVolume}}</td>
     <td>{{halsteadPotential}}</td>
     <td>{{halsteadLevel}}</td>
-    <td>{{mi}}</td>
+    <td class="{{miComplex}}">{{mi}}</td>
 </tr>
     </script>
     <script type="text/javascript" src="lib/jsmeter-web.js"></script>
