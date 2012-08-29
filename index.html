@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>jsmeter - JavaScript code metrics</title>
+    <style type="text/css">
+    #code { 
+        width: 95%;
+        height: 80%;
+    }
+    #inputCode {
+        height: 80%;
+    }
+    #inputCode form {
+        height: 80%;
+    }
+    .hidden { 
+        display: none
+    }
+    </style>
+</head>
+<body>
+    <header>
+    <span>jsmeter web UI</span>
+    </header>
+    <button type="button" id="analyzeCode">Analyze</button>
+    <button type="button" id="editCode">Edit</button>
+    <div id="inputCode">
+    <form onsubmit="return false;">
+        <textarea id="code">
+// Paste your own code into this window
+// Or, you can put full URL's to JavaScript files on the internet
+// There is an API for using these analyses in your own ways as well
+// And, this is open-sourced and available at http://code.google.com/p/jsmeter
+// For a quick demo, just click Analyze or Visualize above!
+
+function testFunction() {
+  var y;
+  
+  switch (x) {
+    case 1:
+      y = x;
+      break;
+    case 2:
+      y = x * 4;
+      break;
+    default:
+      y = 0;
+      break;
+  }
+  
+  return y;
+}</textarea>
+    </form>
+    </div>
+        <div id="results" class="hidden">
+            <table border="0" id="resultTable">
+	            <thead>
+	                <tr>
+	                    <th>Line</th>
+	                    <th>Function</th>
+	                    <th>Statements</th>
+	                    <th>Lines</th>
+	                    <th>Comment Lines</th>
+	                    <th>Comment%</th>
+	                    <th>Branches</th>
+	                    <th>Depth</th>
+	                    <th>Cyclomatic Complexity</th>
+	                    <th>Halstead Volume</th>
+	                    <th>Halstead Potential</th>
+	                    <th>Program Level</th>
+	                    <th>MI</th>
+	                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    <script type="text/javascript" src="lib/jquery-1.8.0-min.js"></script>
+    <script type="text/javascript" src="lib/handlebars-1.0.0.beta.6-min.js"></script>
+    <script id="result-row-template" type="text/x-handlebars-template">
+<tr class="{{rowClass}}">
+    <td>{{lineStart}}</td>
+    <td>{{functionName}}</td>
+    <td>{{statements}}</td>
+    <td>{{b}}</td>
+    <td>{{lines}}</td>
+    <td>{{comments}}</td>
+    <td>{{commentPercent}}</td>
+    <td>{{commentPercent}}</td>
+    <td>{{blockDepth}}</td>
+    <td>{{complexity}}</td>
+    <td>{{halsteadVolume}}</td>
+    <td>{{halsteadPotential}}</td>
+    <td>{{halsteadLevel}}</td>
+    <td>{{mi}}</td>
+</tr>
+    </script>
+    <script type="text/javascript">
+    function edit() {
+        
+        $("#results").addClass("hidden");
+        
+        $("#inputCode").removeClass("hidden");
+        
+    }
+    function processResults(results) {
+        var table, rowTemplate, rlen, i, row;
+        
+        table = $("#resultTable tbody");
+        rowTemplate = Handlebars.compile($("#result-row-template").html());
+
+        $("#results").removeClass("hidden");
+        
+        $("#inputCode").addClass("hidden");
+        
+        rlen = results.length;
+        
+        for ( i =0; i < rlen; i+=1 ) {
+            if ( isNaN(results[i]) ) {
+                row = results[i];
+                row['rowClass'] = ( i % 2 === 0 ) ? "odd": "even";
+                table.append( rowTemplate( row ) );
+            } 
+        } 
+    }
+    function analyze() {
+        var data;
+        
+        data = $("#code").html();
+        
+        $.post("/node/jsmeter?mode=JSON",
+              data.toString(),
+              processResults, 
+              "json"
+        );
+    }
+    $("#analyzeCode").bind("click", analyze);
+    $("#editCode").bind("click", edit);
+    </script>
+</body>
+</html>
