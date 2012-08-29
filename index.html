@@ -4,22 +4,27 @@
     <meta charset="utf-8" />
     <title>jsmeter - JavaScript code metrics</title>
     <style type="text/css">
-    #code { 
+    body {
+        background: #e8e8e8; 
+        font-size: 1em;
+    }
+    #buttonBar, #inputCode, #results { 
         margin: 5px; 
         width: 95%;
         height: 80%;
+        margin: 0 auto;
+        background: #ffffff;
     }
-    #inputCode {
-        height: 80%;
-    }
-    #inputCode form {
-        height: 80%;
+    #code {
+        width: 100%;
+        resize: none;
     }
     .hidden { 
         display: none
     }
     table { 
-        margin: 5px; 
+        margin: 5px;
+        background: #ffffff; 
     }
     table, table th, table td { 
         border: solid 1px black; 
@@ -28,14 +33,32 @@
     tr.odd { 
         background: #ffff09;
     }
+    button { 
+        margin: 5px 10px; 
+        background: #ccffff;
+        border-radius: 25px; 
+        font-weight: bold;
+        font-size: 1.25em;
+    }
+    header {
+        margin: 0px 0px 10px 0px;
+    }
+    header div { 
+        font-weight: bold;
+        font-size: 1.25em;
+        margin: 0  auto;
+        width: 95%;
+    }
     </style>
 </head>
 <body>
-    <header>
-    <span>jsmeter web UI</span>
+    <header id="docHead">
+    <div>jsmeter web UI</div>
     </header>
-    <button type="button" id="analyzeCode">Analyze</button>
-    <button type="button" id="editCode">Edit</button>
+    <div id="buttonBar">
+        <button type="button" id="analyzeCode">Analyze</button>
+        <button type="button" id="editCode">Edit</button>
+    </div>
     <div id="inputCode">
     <form onsubmit="return false;">
         <textarea id="code">
@@ -106,8 +129,6 @@ function testFunction() {
     <td>{{mi}}</td>
 </tr>
     </script>
-    <script type="text/javascript" src="lib/jsmeter-web.js">
-    
-    </script>
+    <script type="text/javascript" src="lib/jsmeter-web.js"></script>
 </body>
 </html>
