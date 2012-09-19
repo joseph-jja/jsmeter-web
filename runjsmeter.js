@@ -35,7 +35,7 @@ app.get(/^\/*/, readFile);
 
 function buildResponse(result) { 
     
-    var name, response = "[";
+    var name, row, response = '{ "analysis":[';
     var len = result.length;
     
     if ( debug ) {
@@ -44,7 +44,9 @@ function buildResponse(result) {
     
     for (var i = 0; i < len; i++) {
         name = result[i].name.replace(/^\[\[[^\]]*\]\]\.?/, "Anonymous");
-        response += '{ "functionName": "' + name.replace("[[code]].", "") + '",';
+        row = ( i % 2 === 0 ) ? "odd": "even";
+        response += '{ "rowClass": "' + row + '",';
+        response += ' "functionName": "' + name.replace("[[code]].", "") + '",';
         response += '"lineStart":"' + result[i].lineStart + '",';
         response += '"statements":"' + result[i].s + '",';
         response += '"branches":"' + result[i].b + '",';
@@ -62,7 +64,7 @@ function buildResponse(result) {
         
     }
     
-    response += "]";
+    response += "] }";
     if ( debug ) {
       console.log(response);
     }

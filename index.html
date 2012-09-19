@@ -94,46 +94,48 @@ function testFunction() {
     </form>
     </div>
         <div id="results" class="hidden">
-            <table id="resultTable">
-	            <thead>
-	                <tr>
-	                    <th>Line</th>
-	                    <th>Function</th>
-	                    <th>Statements</th>
-	                    <th>Branches</th>
-                        <th>Lines</th>
-	                    <th>Comment Lines</th>
-	                    <th>Comment Percent</th>
-	                    <th>Depth</th>
-	                    <th>Cyclomatic Complexity</th>
-	                    <th>Halstead Volume</th>
-	                    <th>Halstead Potential</th>
-	                    <th>Program Level</th>
-	                    <th>MI</th>
-	                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
         </div>
     <script type="text/javascript" src="lib/jquery-1.8.0-min.js"></script>
-    <script type="text/javascript" src="lib/handlebars-1.0.0.beta.6-min.js"></script>
+    <script type="text/javascript" src="lib/handlebars-1.0.0.rc1-min.js"></script>
     <script id="result-row-template" type="text/x-handlebars-template">
-<tr class="{{rowClass}}">
-    <td>{{lineStart}}</td>
-    <td>{{functionName}}</td>
-    <td>{{statements}}</td>
-    <td>{{branches}}</td>
-    <td>{{lines}}</td>
-    <td>{{comments}}</td>
-    <td>{{commentPercent}}</td>
-    <td>{{blockDepth}}</td>
-    <td class="{{complex}}">{{complexity}}</td>
-    <td>{{halsteadVolume}}</td>
-    <td>{{halsteadPotential}}</td>
-    <td>{{halsteadLevel}}</td>
-    <td class="{{miComplex}}">{{mi}}</td>
+<table>
+    <thead>
+	<tr>
+	    <th>Line</th>
+	    <th>Function</th>
+	    <th>Statements</th>
+	    <th>Branches</th>
+	<th>Lines</th>
+	    <th>Comment Lines</th>
+	    <th>Comment Percent</th>
+	    <th>Depth</th>
+	    <th>Cyclomatic Complexity</th>
+	    <th>Halstead Volume</th>
+	    <th>Halstead Potential</th>
+	    <th>Program Level</th>
+	    <th>MI</th>
+	</tr>
+</thead>
+<tbody>
+{{#each analysis}}
+<tr class="{{this.rowClass}}">
+    <td>{{this.lineStart}}</td>
+    <td>{{this.functionName}}</td>
+    <td>{{this.statements}}</td>
+    <td>{{this.branches}}</td>
+    <td>{{this.lines}}</td>
+    <td>{{this.comments}}</td>
+    <td>{{this.commentPercent}}</td>
+    <td>{{this.blockDepth}}</td>
+    <td class="{{this.complex}}">{{this.complexity}}</td>
+    <td>{{this.halsteadVolume}}</td>
+    <td>{{this.halsteadPotential}}</td>
+    <td>{{this.halsteadLevel}}</td>
+    <td class="{-{miComplex}-}">{{this.mi}}</td>
 </tr>
+{{/each}}
+</tbody>
+</table>
     </script>
     <script type="text/javascript" src="lib/jsmeter-web.js"></script>
 </body>
