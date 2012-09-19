@@ -55,6 +55,7 @@ function buildResponse(result) {
         response += '"commentPercent":"' + Math.round(result[i].comments / (result[i].lines) * 10000)/100 + '",';
         response += '"blockDepth":"' + result[i].blockDepth + '",';
         response += '"complexity":"' + result[i].complexity + '",';
+        response += '"complex":"' + (( row['complexity'] > 10 ) ? "exceeded": "") + '",';
         response += '"halsteadVolume":"' + result[i].halsteadVolume + '",';
         response += '"halsteadPotential":"' + result[i].halsteadPotential + '",';
         response += '"halsteadLevel":"' + result[i].halsteadLevel + '",';
