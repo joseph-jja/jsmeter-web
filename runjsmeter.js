@@ -59,6 +59,7 @@ function buildResponse(result) {
         response += '"halsteadVolume":"' + result[i].halsteadVolume + '",';
         response += '"halsteadPotential":"' + result[i].halsteadPotential + '",';
         response += '"halsteadLevel":"' + result[i].halsteadLevel + '",';
+        response += '"miComplex":"' + (( parseFloat(result[i].mi, 10) < 100 ) ? "exceeded": "") + '",';
         if ( isNaN(result[i].mi) ) { result[i].mi = 0; }
         response += '"mi":"' + parseFloat(result[i].mi, 10) + '" }';
         if ( i < len - 1 ) { response += ","; }
