@@ -14,7 +14,7 @@ function readFile(req, res) {
     fs.readFile(filename, (function (name) {
         return function (err, data) {
             if (err) { 
-                res.status(404);
+                res.status(500);
                 console.log(err); return; 
             }
             if ( filename.lastIndexOf(".js") !== -1 ) {
@@ -24,6 +24,8 @@ function readFile(req, res) {
             } else if ( filename.lastIndexOf(".png") !== -1 ) {
                 res.set('Content-Type', 'image/png');
             } else if ( filename.lastIndexOf(".html") !== -1 ) {
+                res.set('Content-Type', 'text/html');
+            } else {
                 res.set('Content-Type', 'text/html');
             }
             res.send(data);
@@ -89,8 +91,12 @@ app.post('/jsmeter', function(req, res){
     });
     
     req.on('end', function() { 
-        
-        var result = meter.run(data);
+        var result;
+        try {  
+            result = meter.run(data);
+        } catch (e) {
+            console.log("Error: " + e);
+        }
         
         res.set('Content-Type', 'text/html');
         
