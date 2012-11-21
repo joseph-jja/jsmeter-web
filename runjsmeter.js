@@ -3,10 +3,12 @@ var fs         = require('fs');
 
 var app = express();
 
-var debug = false;
+var debug = true;
 
 function readFile(req, res) {
     var filename = req.originalUrl;
+    if ( ! filename ) {
+    }
     filename = filename.replace(/^\//, '');
     if ( filename === '' ) { 
         filename = "index.html";
@@ -17,6 +19,7 @@ function readFile(req, res) {
                 res.status(500);
                 console.log(err); return; 
             }
+            if ( debug ) { console.log("Filename is " + filename); }
             if ( filename.lastIndexOf(".js") !== -1 ) {
                 res.set('Content-Type', 'text/javascript');
             } else if ( filename.lastIndexOf(".css") !== -1 ) {
@@ -83,17 +86,22 @@ app.post('/jsmeter', function(req, res){
     meter = meter['jsmeter'];
 
     data = "";
+
     req.on('data', function(chunk) { 
             data += chunk.toString();
             if ( debug ) {
-                console.log(data);
+            //    console.log("Got: " + data);
             }
     });
     
     req.on('end', function() { 
         var result;
+        //if ( debug ) { console.log("Data complete is " + data); }
         try {  
-            result = meter.run(data);
+            if ( debug ) { console.log("Before meter run."); }
+            data = data.replace(/\n/, '').replace(/\r/, ''); 
+            result = meter.run( data );
+            if ( debug ) { console.log("After meter run."); }
         } catch (e) {
             console.log("Error: " + e);
         }
