@@ -1,11 +1,41 @@
 var express         = require('express'),
     fs         = require('fs'), 
     app = express(), 
-    debug = true;
+    debug = true, 
+    setContentType,
+    log, level = {};
+
+level.L0 = "error";
+level.L1 = "warn";
+level.L2 = "info";
+level.L3 = "debug";
+
+log = function(msg, type) { 
+    
+    if ( debug || type === level.L0 ) { 
+        console.log(msg);
+    }
+};
+
+setContentType = function(filename, res) {
+    
+    if ( filename.lastIndexOf(".js") !== -1 ) {
+        res.set('Content-Type', 'text/javascript');
+    } else if ( filename.lastIndexOf(".css") !== -1 ) {
+        res.set('Content-Type', 'text/css');
+    } else if ( filename.lastIndexOf(".png") !== -1 ) {
+        res.set('Content-Type', 'image/png');
+    } else if ( filename.lastIndexOf(".html") !== -1 ) {
+        res.set('Content-Type', 'text/html');
+    } else {
+        res.set('Content-Type', 'text/html');
+    }
+};
 
 function readFile(req, res) {
     var filename = req.originalUrl;
     if ( ! filename ) {
+        filename = "index.html";
     }
     filename = filename.replace(/^\//, '');
     if ( filename === '' ) { 
@@ -15,20 +45,10 @@ function readFile(req, res) {
         return function (err, data) {
             if (err) { 
                 res.status(500);
-                console.log(err); return; 
+                log(err, level.L0); return; 
             }
-            if ( debug ) { console.log("Filename is " + filename); }
-            if ( filename.lastIndexOf(".js") !== -1 ) {
-                res.set('Content-Type', 'text/javascript');
-            } else if ( filename.lastIndexOf(".css") !== -1 ) {
-                res.set('Content-Type', 'text/css');
-            } else if ( filename.lastIndexOf(".png") !== -1 ) {
-                res.set('Content-Type', 'image/png');
-            } else if ( filename.lastIndexOf(".html") !== -1 ) {
-                res.set('Content-Type', 'text/html');
-            } else {
-                res.set('Content-Type', 'text/html');
-            }
+            log("Filename is " + filename); 
+            setContentType(filename, res);
             res.send(data);
         }
     })());
@@ -41,9 +61,7 @@ function buildResponse(result) {
     var name, row, response = '{ "analysis":[', 
         len = result.length, i;
     
-    if ( debug ) {
-        console.log("Result length = " + len);
-    }
+    log("Result length = " + len);
     
     for (i = 0; i < len; i++) {
         name = result[i].name.replace(/^\[\[[^\]]*\]\]\.?/, "Anonymous");
@@ -70,9 +88,7 @@ function buildResponse(result) {
     }
     
     response += "] }";
-    if ( debug ) {
-      console.log(response);
-    }
+    log(response);
     return response;
 }
 
@@ -87,21 +103,19 @@ app.post('/jsmeter', function(req, res){
 
     req.on('data', function(chunk) { 
             data += chunk.toString();
-            if ( debug ) {
-            //    console.log("Got: " + data);
-            }
+            //    log("Got: " + data);
     });
     
     req.on('end', function() { 
         var result, response;
-        //if ( debug ) { console.log("Data complete is " + data); }
+        //if ( debug ) { log("Data complete is " + data); }
         try {  
-            if ( debug ) { console.log("Before meter run."); }
+            log("Before meter run.");
             data = data.replace(/\n/, '').replace(/\r/, ''); 
             result = meter.run( data );
-            if ( debug ) { console.log("After meter run."); }
+            log("After meter run.");
         } catch (e) {
-            console.log("Error: " + e);
+            log("Error: " + e, level.L0);
         }
         
         res.set('Content-Type', 'text/html');
@@ -112,6 +126,6 @@ app.post('/jsmeter', function(req, res){
     });
 });
 
-console.log("listening on localhost port 12000.");
+log("listening on localhost port 12000.");
 app.listen(12000);
 
