@@ -1,9 +1,7 @@
-var express         = require('express');
-var fs         = require('fs');
-
-var app = express();
-
-var debug = true;
+var express         = require('express'),
+    fs         = require('fs'), 
+    app = express(), 
+    debug = true;
 
 function readFile(req, res) {
     var filename = req.originalUrl;
@@ -40,14 +38,14 @@ app.get(/^\/*/, readFile);
 
 function buildResponse(result) { 
     
-    var name, row, response = '{ "analysis":[';
-    var len = result.length;
+    var name, row, response = '{ "analysis":[', 
+        len = result.length, i;
     
     if ( debug ) {
         console.log("Result length = " + len);
     }
     
-    for (var i = 0; i < len; i++) {
+    for (i = 0; i < len; i++) {
         name = result[i].name.replace(/^\[\[[^\]]*\]\]\.?/, "Anonymous");
         row = ( i % 2 === 0 ) ? "odd": "even";
         response += '{ "rowClass": "' + row + '",';
@@ -95,7 +93,7 @@ app.post('/jsmeter', function(req, res){
     });
     
     req.on('end', function() { 
-        var result;
+        var result, response;
         //if ( debug ) { console.log("Data complete is " + data); }
         try {  
             if ( debug ) { console.log("Before meter run."); }
@@ -108,10 +106,12 @@ app.post('/jsmeter', function(req, res){
         
         res.set('Content-Type', 'text/html');
         
-        var response = buildResponse(result);
+        response = buildResponse(result);
         
         res.send(response);        
     });
 });
 
+console.log("listening on localhost port 12000.");
 app.listen(12000);
+
