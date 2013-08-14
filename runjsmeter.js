@@ -58,33 +58,36 @@ app.get(/^\/*/, readFile);
 
 function buildResponse(result) { 
     
-    var name, row, response = '{ "analysis":[', 
-        len = result.length, i;
+    var name, row, response = '{ "analysis":[', len, i, lines;
+    
+    len = ( ( result ) ? result.length : 0 );
     
     log("Result length = " + len);
     
     for (i = 0; i < len; i++) {
-        name = result[i].name.replace(/^\[\[[^\]]*\]\]\.?/, "Anonymous");
-        row = ( i % 2 === 0 ) ? "odd": "even";
-        response += '{ "rowClass": "' + row + '",';
-        response += ' "functionName": "' + name.replace("[[code]].", "") + '",';
-        response += '"lineStart":"' + result[i].lineStart + '",';
-        response += '"statements":"' + result[i].s + '",';
-        response += '"branches":"' + result[i].b + '",';
-        response += '"lines":"' + result[i].lines + '",';
-        response += '"comments":"' + result[i].comments + '",';
-        response += '"commentPercent":"' + Math.round(result[i].comments / (result[i].lines) * 10000)/100 + '",';
-        response += '"blockDepth":"' + result[i].blockDepth + '",';
-        response += '"complexity":"' + result[i].complexity + '",';
-        response += '"complex":"' + (( row['complexity'] > 10 ) ? "exceeded": "") + '",';
-        response += '"halsteadVolume":"' + result[i].halsteadVolume + '",';
-        response += '"halsteadPotential":"' + result[i].halsteadPotential + '",';
-        response += '"halsteadLevel":"' + result[i].halsteadLevel + '",';
-        response += '"miComplex":"' + (( parseFloat(result[i].mi, 10) < 100 ) ? "exceeded": "") + '",';
-        if ( isNaN(result[i].mi) ) { result[i].mi = 0; }
-        response += '"mi":"' + parseFloat(result[i].mi, 10) + '" }';
-        if ( i < len - 1 ) { response += ","; }
-        
+		if ( result[i] ) {
+			name = ( result[i].name ) ? result[i].name.replace(/^\[\[[^\]]*\]\]\.?/, "Anonymous") : "";
+			row = ( i % 2 === 0 ) ? "odd": "even";
+			response += '{ "rowClass": "' + row + '",';
+			response += ' "functionName": "' + name.replace("[[code]].", "") + '",';
+			response += '"lineStart":"' + result[i].lineStart + '",';
+			response += '"statements":"' + result[i].s + '",';
+			response += '"branches":"' + result[i].b + '",';
+			response += '"lines":"' + result[i].lines + '",';
+			response += '"comments":"' + result[i].comments + '",';
+			lines = ( ( result[i].lines !==  0 ) ? result[i].lines : 1 );
+			response += '"commentPercent":"' + Math.round(result[i].comments / result[i].lines * 10000)/100 + '",';
+			response += '"blockDepth":"' + result[i].blockDepth + '",';
+			response += '"complexity":"' + result[i].complexity + '",';
+			response += '"complex":"' + (( row['complexity'] > 10 ) ? "exceeded": "") + '",';
+			response += '"halsteadVolume":"' + result[i].halsteadVolume + '",';
+			response += '"halsteadPotential":"' + result[i].halsteadPotential + '",';
+			response += '"halsteadLevel":"' + result[i].halsteadLevel + '",';
+			if ( isNaN(result[i].mi) ) { result[i].mi = 0; }
+			response += '"miComplex":"' + (( parseFloat(result[i].mi, 10) < 100 ) ? "exceeded": "") + '",';
+			response += '"mi":"' + parseFloat(result[i].mi, 10) + '" }';
+			if ( i < len - 1 ) { response += ","; }
+		}  
     }
     
     response += "] }";
