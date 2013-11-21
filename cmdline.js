@@ -24,6 +24,7 @@
 						console.log(" comments:   %d", result[i].comments);
 						console.log(" % comments:   %d", Math.round(result[i].comments / (result[i].lines) * 10000)/100 + "%" );
 						console.log(" branches: %d", result[i].b);
+						console.log(" depth: %d", result[i].depth);
 						console.log(" depth: %d", result[i].branchDepth);
 						console.log(" complexity: %d", result[i].complexity);
 						console.log(" Halstead Volume: %d", result[i].halsteadVolume);
