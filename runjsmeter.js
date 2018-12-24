@@ -2,6 +2,7 @@ var express         = require('express'),
     fs         = require('fs'), 
     app = express(), 
     debug = true, 
+    baseDir = process.cwd(),
     setContentType,
     log, level = {};
 
@@ -98,7 +99,7 @@ function buildResponse(result) {
 app.post('/jsmeter', function(req, res){
 
     var data, fs = require("fs"), 
-        meter = require("jsmeter");
+        meter = require(baseDir + "lib/jsmeter/jsmeter");
     
     meter = meter['jsmeter'];
 
