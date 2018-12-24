@@ -2,7 +2,7 @@
 		var verbose = false;
 		var args = process.argv;
 		var fs = require("fs");
-		var meter = require("jsmeter");
+		var meter = require("./lib/jsmeter/jsmeter");
                 meter = meter['jsmeter'];
 		for (var a = 2; a < args.length; a++) {
 			if (args[a] === "--verbose") {
