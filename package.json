@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "espree": "^5.0.0",
+    "estraverse": "^4.2.0",
     "express": "^4.16.4"
   }
 }
