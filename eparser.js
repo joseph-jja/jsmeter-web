@@ -80,7 +80,7 @@ estraverse.traverse(tree, {
  - Program Level: 0.506      
  - MI Volume: 150.1
 */
-functionMap.forEach( item => {
+const computedResults = functionMap.map( item => {
     
     const result = {
         file: file,
@@ -89,10 +89,13 @@ functionMap.forEach( item => {
         endLine: item.loc.end.line,
         lines: ( item.loc.end.line - item.loc.start.line)
     }; 
+
     console.log('BEGIN -------------------------');
-    //console.log(item);
+    console.log(item.body);
     console.log(result);
     console.log('END -------------------------');
+
+    return result;
 });
 
 
