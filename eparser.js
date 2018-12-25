@@ -59,10 +59,13 @@ const computedResults = functionMap.map(item => {
                 returns++;
             } else if (node.type === 'IfStatement') {
                 branches++;
-                if ( node.alternate && node.alternate.type === 'BlockStatement') {
+                if (node.alternate && node.alternate.type === 'BlockStatement') {
                     branches++;
                 }
-            } else if (node.type === 'ForStatement') {
+            } else if (node.type === 'ForStatement' ||
+                node.type === 'DoWhileStatement' ||
+                node.type === 'WhileStatement') {
+
                 branches++;
             } else {
                 //console.log(node.type); 
