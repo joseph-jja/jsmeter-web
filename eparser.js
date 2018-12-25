@@ -29,7 +29,7 @@ function mapComments(start, end) {
  - statements: 1  
  - lines:      2   
  - comments:   0       
- - % comments:   NaN    
+ - % comments:   NaN   
  - branches: 0          
  - depth: 0        
  - complexity: 1  
