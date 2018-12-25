@@ -44,17 +44,26 @@ const computedResults = functionMap.map(item => {
 
     const result = {
         file: file,
-        functionName: item.name,
+        functionName: item.name || '(Anonymous1)',
         startLine: item.loc.start.line,
         endLine: item.loc.end.line,
         lines: (item.loc.end.line - item.loc.start.line)
     };
 
     let returns = 1,
+        statements = 0,
         branches = 0;
+
+    if (item.type === 'FunctionExpression') {
+        statements++;
+    }
 
     estraverse.traverse(item, {
         enter: function(node, parent) {
+            if (node.type.indexOf('Statement') > -1) {
+                statements++;
+            }
+
             if (node.type === 'ReturnStatement') {
                 returns++;
             } else if (node.type === 'IfStatement') {
@@ -74,12 +83,13 @@ const computedResults = functionMap.map(item => {
         leave: function(node, parent) {}
     });
 
+    result.statements = statements;
     result.returns = returns;
     result.branches = branches;
     result.comments = mapComments(result.startLine, result.endLine);
 
     console.log('BEGIN -------------------------');
-    //console.log(item.body);
+    console.log(item.type);
     console.log(result);
     console.log('END -------------------------');
 
