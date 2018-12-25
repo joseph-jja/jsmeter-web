@@ -8,18 +8,10 @@ const file = process.argv[2];
 
 const data = fs.readFileSync(file);
 
-const parserOptions = {
-    ecmaVersion: 8,
-    range: true,
-    loc: true,
-    comment: true,
-    tokens: false,
-    sourceType: "module"
-};
-
-const tree = espree.parse(data, parserOptions);
-
-const functionMap = parser.parse(data);
+const {
+    comments,
+    functionMap
+} = parser.parse(data);
 
 /* 
  data to gather
@@ -47,6 +39,20 @@ const computedResults = functionMap.map(item => {
         endLine: item.loc.end.line,
         lines: (item.loc.end.line - item.loc.start.line)
     };
+
+    let returns = 1,
+        branches = 0;
+
+    estraverse.traverse(item, {
+        enter: function(node, parent) {
+            if (node.type === 'ReturnStatement') {
+                returns++;
+            }
+        },
+        leave: function(node, parent) {}
+    });
+
+    result.returns = returns;
 
     console.log('BEGIN -------------------------');
     console.log(item.body);
