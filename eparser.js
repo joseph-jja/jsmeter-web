@@ -13,6 +13,16 @@ const {
     functionMap
 } = parser.parse(data);
 
+// map the comments to the functions based on lines
+function mapComments(start, end) {
+
+    return comments.filter(x => {
+        const linestart = x.loc.start.line,
+            lineend = x.loc.end.line;
+        return (linestart >= start && lineend <= end);
+    }).length;
+}
+
 /* 
  data to gather
  - lib/jsmeter/jsmeter.js (Anonymous1).runJsmeter.out.write
@@ -47,15 +57,26 @@ const computedResults = functionMap.map(item => {
         enter: function(node, parent) {
             if (node.type === 'ReturnStatement') {
                 returns++;
+            } else if (node.type === 'IfStatement') {
+                branches++;
+                if ( node.alternate && node.alternate.type === 'BlockStatement') {
+                    branches++;
+                }
+            } else if (node.type === 'ForStatement') {
+                branches++;
+            } else {
+                //console.log(node.type); 
             }
         },
         leave: function(node, parent) {}
     });
 
     result.returns = returns;
+    result.branches = branches;
+    result.comments = mapComments(result.startLine, result.endLine);
 
     console.log('BEGIN -------------------------');
-    console.log(item.body);
+    //console.log(item.body);
     console.log(result);
     console.log('END -------------------------');
 
