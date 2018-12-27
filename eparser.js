@@ -62,8 +62,12 @@ const computedResults = functionMap.map(item => {
         if (node.type.indexOf('Statement') > -1) {
             statements++;
         } else if (node.type.indexOf('VariableDeclaration') > -1 &&
-            node.declarations && node.declarations.init) {
-            statements++;
+            node.declarations) {
+            node.declarations.forEach(i => {
+                if (i.init) {
+                    statements++;
+                }
+            });
         }
 
         if (node.type === 'ReturnStatement') {
