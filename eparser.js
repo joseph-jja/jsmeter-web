@@ -59,35 +59,35 @@ const computedResults = functionMap.map(item => {
     }
 
     function processNodeEnter(node, parent) {
-            if (node.type.indexOf('Statement') > -1) {
-                statements++;
-            } else if (node.type.indexOf('VariableDeclaration') > -1 && 
-                node.declarations && node.declarations.init) {
-                statements++;
-            }
-
-            if (node.type === 'ReturnStatement') {
-                returns++;
-            } else if (node.type === 'IfStatement') {
-                branches++;
-                if (node.alternate && node.alternate.type === 'BlockStatement') {
-                    branches++;
-                }
-            } else if (node.type === 'ForStatement' ||
-                node.type === 'DoWhileStatement' ||
-                node.type === 'WhileStatement') {
-
-                branches++;
-            } else {
-                //console.log(node.type); 
-            }
-            if (node.body) {
-                 node.body.forEach( i=> {
-                    console.log(node.body[i]); 
-                 });
-            }
+        if (node.type.indexOf('Statement') > -1) {
+            statements++;
+        } else if (node.type.indexOf('VariableDeclaration') > -1 &&
+            node.declarations && node.declarations.init) {
+            statements++;
         }
-    
+
+        if (node.type === 'ReturnStatement') {
+            returns++;
+        } else if (node.type === 'IfStatement') {
+            branches++;
+            if (node.alternate && node.alternate.type === 'BlockStatement') {
+                branches++;
+            }
+        } else if (node.type === 'ForStatement' ||
+            node.type === 'DoWhileStatement' ||
+            node.type === 'WhileStatement') {
+
+            branches++;
+        } else {
+            //console.log(node.type); 
+        }
+        if (node.body) {
+            node.body.forEach(i => {
+                console.log(node.body[i]);
+            });
+        }
+    }
+
     estraverse.traverse(item, {
         enter: processNodeEnter,
         leave: function(node, parent) {}
