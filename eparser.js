@@ -83,7 +83,7 @@ const computedResults = functionMap.map(item => {
             }
             if (node.body) {
                  node.body.forEach( i=> {
-                    processNodeEnter(node.body[i]); 
+                    console.log(node.body[i]); 
                  });
             }
         }
