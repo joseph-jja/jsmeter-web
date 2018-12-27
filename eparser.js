@@ -81,9 +81,9 @@ const computedResults = functionMap.map(item => {
         } else {
             //console.log(node.type); 
         }
-        if (node.body) {
+        if (node.body && Array.isArray(node.body)) {
             node.body.forEach(i => {
-                console.log(node.body[i]);
+                processNodeEnter(i);
             });
         }
     }
