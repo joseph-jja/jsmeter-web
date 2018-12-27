@@ -58,8 +58,7 @@ const computedResults = functionMap.map(item => {
         statements++;
     }
 
-    estraverse.traverse(item, {
-        enter: function(node, parent) {
+    function processNodeEnter(node, parent) {
             if (node.type.indexOf('Statement') > -1) {
                 statements++;
             } else if (node.type.indexOf('VariableDeclaration') > -1 && 
@@ -82,7 +81,15 @@ const computedResults = functionMap.map(item => {
             } else {
                 //console.log(node.type); 
             }
-        },
+            if (node.body) {
+                 node.body.forEach( i=> {
+                    processNodeEnter(node.body[i]); 
+                 });
+            }
+        }
+    
+    estraverse.traverse(item, {
+        enter: processNodeEnter,
         leave: function(node, parent) {}
     });
 
