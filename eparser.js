@@ -66,6 +66,9 @@ const computedResults = functionMap.map(item => {
             node.declarations.forEach(i => {
                 if (i.init) {
                     statements++;
+                    //console.log('begin');
+                    //console.log(i);
+                    //console.log('end');
                 }
             });
         }
@@ -85,11 +88,14 @@ const computedResults = functionMap.map(item => {
         } else {
             //console.log(node.type); 
         }
-        if (node.body && Array.isArray(node.body)) {
-            node.body.forEach(i => {
-                processNodeEnter(i);
+        /*if (node.body && Array.isArray(node.body)) {
+             node.body.forEach(i => {
+                //processNodeEnter(i);
+                    console.log('---begin');
+                    console.log(i);
+                    console.log('---end');
             });
-        }
+        }*/
     }
 
     estraverse.traverse(item, {
