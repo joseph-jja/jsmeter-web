@@ -23,21 +23,21 @@ function mapComments(start, end) {
     }).length;
 }
 
-/* 
+/*
  data to gather
  - lib/jsmeter/jsmeter.js (Anonymous1).runJsmeter.out.write
- - statements: 1  
- - lines:      2   
- - comments:   0       
- - % comments:   NaN   
- - branches: 0          
- - depth: 0        
- - complexity: 1  
-   = complexity =  exits − N P 
+ - statements: 1
+ - lines:      2
+ - comments:   0
+ - % comments:   NaN
+ - branches: 0
+ - depth: 0
+ - complexity: 1
+   = complexity =  exits − N P
    = https://en.wikipedia.org/wiki/Cyclomatic_complexity
- - Halstead Volume: 15.8     
- - Halstead Potential: 8      
- - Program Level: 0.506      
+ - Halstead Volume: 15.8
+ - Halstead Potential: 8
+ - Program Level: 0.506
  - MI Volume: 150.1
 */
 const computedResults = functionMap.map(item => {
@@ -59,7 +59,13 @@ const computedResults = functionMap.map(item => {
     }
 
     function processNodeEnter(node, parent) {
-        if (node.type.indexOf('Statement') > -1) {
+        if (node.type.indexOf('ExpressionStatement') > -1) {
+            statements++;
+        } else if (node.type.indexOf('BlockStatement') > -1) {
+            statements++;
+        } else if (node.type.indexOf('BinaryExpression') > -1) {
+            statements++;
+        } else if (node.type.indexOf('CallExpression') > -1) {
             statements++;
         } else if (node.type.indexOf('VariableDeclaration') > -1 &&
             node.declarations) {
@@ -86,7 +92,7 @@ const computedResults = functionMap.map(item => {
 
             branches++;
         } else {
-            //console.log(node.type); 
+            //console.log(node.type);
         }
         /*if (node.body && Array.isArray(node.body)) {
              node.body.forEach(i => {
