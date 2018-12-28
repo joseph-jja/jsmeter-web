@@ -4,7 +4,6 @@ var fs = require("fs");
 var meter = require("./lib/jsmeter/jsmeter")['jsmeter'];
 
 var start = 2;
-var verbose;
 if (args[a] === "--verbose") {
     start = 3;
     verbose = true;
