@@ -13,15 +13,14 @@ for (var a = start; a < args.length; a++) {
     var name = args[a];
     fs.readFile(name, "utf8", function(err, data) {
         if (err) throw err;
-        console.log(name);
         if (err) throw err;
         var result = meter.run(data, name.match(/([^\/])\.js$/)[1]);
         for (var i = 0; i < result.length; i++) {
             if (verbose) {
                 console.dir(result[i]);
             }
-            console.log(" line start: %d", result[i].lineStart);
             console.log(name, result[i].name.replace(/^\[\[[^\]]*\]\]\.?/, ""));
+            console.log(" line start: %d", result[i].lineStart);
             console.log(" statements: %d", result[i].s);
             console.log(" lines:      %d", result[i].lines);
             console.log(" comments:   %d", result[i].comments);
