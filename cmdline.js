@@ -3,7 +3,7 @@ var args = process.argv;
 var fs = require("fs");
 var meter = require("./lib/jsmeter/jsmeter")['jsmeter'];
 
-var start = 2;
+let start = 2;
 if (args[a] === "--verbose") {
     start = 3;
     verbose = true;
